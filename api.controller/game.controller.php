@@ -2,7 +2,7 @@
 require_once 'api.model/game.model.php';
 require_once 'api.view/api.view.php';
 
-class ApiTaskController {
+class GameController {
     private $model;
     private $view;
     private $data;
