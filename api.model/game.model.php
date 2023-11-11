@@ -15,30 +15,27 @@ class GamesModel{
         return $db;
     }
 
-    /* Obtener todos los juegos de la DB
-    //function getAllGames(){        
-       
-        $query = $this->db -> prepare ('SELECT juegos.*, desarrolladores.company AS company FROM juegos
-        INNER JOIN desarrolladores ON juegos.desarrollador = desarrolladores.id_desarrollador
-        WHERE');
-        $query-> execute();           
-        $games = $query -> fetchAll(PDO::FETCH_OBJ);                       
-
-        return $games;  */
-
     function getAllGames($orderBy, $direction, $filterBy, $offset, $limit) {
         $query = $this->db->prepare(" SELECT juegos.*, desarrolladores.company AS company FROM juegos
                                       INNER JOIN desarrolladores ON juegos.desarrollador = desarrolladores.id_desarrollador
                                       WHERE (? IS NULL OR desarrolladores.company = ?)
-                                      ORDER BY $orderBy $direction LIMIT ?, ?");
+                                      ORDER BY $orderBy $direction
+                                      LIMIT $offset, $limit 
+                                      "); 
 
-        $query->execute([$filterBy, $filterBy, $offset, $limit]);
+        echo "Consulta SQL: " . $query->queryString;
+
+        $query->execute([$filterBy, $filterBy]);
         $games = $query->fetchAll(PDO::FETCH_OBJ);   
         return $games;
     }
 
-
-
+    function getCantCompany ($compName){
+        $query = $this->db->prepare("SELECT COUNT(*) FROM desarrolladores WHERE company = ?");
+        $query->execute([$compName]);
+        $cantCompany = $query->fetchColumn();
+        return $cantCompany;
+    }
 
     function getGame($id){
         $query = $this->db->prepare('SELECT * FROM juegos WHERE id = ?');

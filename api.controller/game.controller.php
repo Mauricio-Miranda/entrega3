@@ -15,59 +15,76 @@ class GameController {
     public function getAll($params = null) {
 
         // Parametro de ordenamiento - campo por defecto 'id' - se puede ordenar por 'id', 'juego' o 'desarrollador'
-
+        // $orderBy solo puede tener 3 unicos valores por lo que no hay peligro de inyeccion en SQL
+       
         if (isset ($_GET['order'])){
             $orderBy = $_GET['order'];
             if($orderBy !=='id' && $orderBy !=='juego' && $orderBy !== 'desarrollador'){
-                $orderBy = 'id';
+                $orderBy = 'id';            
             }
+        }else{
+            $orderBy = 'id';
         }
 
         // Direccion del ordenamiento - Direccion por defecto 'ascendente' - puede ser ascendente o descendente
-
+        // $direction solo puede tener 2 unicos valorespor lo que no hay peligro de inyeccion en SQL
+        
         if (isset($_GET['dir'])){
             $direction = $_GET['dir'];
-            if($direction !=='asc' && $direction !== 'des'){
+            if($direction !=='asc' && $direction !== 'desc'){
                 $direction = 'asc';
             }
+        }else{
+            $direction = "asc";
         }
 
-        // Parametro de filtro - por defecto 'null' sin finltro - puede filtrarce por 'desarrollador'
+        // Parametro de filtro - por defecto 'null' sin filtro - puede filtrarse por 'desarrollador'
 
         if (isset($_GET['filterBy'])){
+            //Aca tengo que controlar que lo que trae $_GET['filterBy']  sea el nombre correcto de una de
+            // las companias cargadas en la base de datos para asignarla, de lo contrario se asigna NULL
             $filterBy = $_GET['filterBy'];
-            if ($filterBy !== 'desarrollador'){
-                $filterBy = null;
-            }
+            if (!$this->isValidCompany($filterBy)){
+                // Si el nombre de la compania es incorrecto devuelve mensaje y codigo de error
+                $this->view->response(array("error" => "Nombre de compania invalido"), 400);
+                exit;
+            }            
+        }else{
+            $filterBy = null;
         }
-        
+       
         // Paginacion
 
         if (isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page'] > 0){
             $page = $_GET['page'];
         } else{        
             $page = 1;
-        }
+        }     
 
         if (isset($_GET['limit']) && is_numeric($_GET['limit']) && $_GET['limit'] > 0){
             $limit = $_GET['limit'];
         } else{        
-            $limit = 10;
+            $limit = 5;
         }
 
-        if (isset($_GET['paginate']) && $_GET['paginate'] === 'true') {
-            // Calcular el offset para la paginación
-            $offset = ($page - 1) * $limit;
-            $games = $this->model->getAllGames($orderBy, $direction, $filterBy, $offset, $limit);
-        } else {
-            // Sin paginación, obtener todos los juegos
-            $games = $this->model->getAllGames($orderBy, $direction, $filterBy, null, null);
-        }
-
-
-        //$games = $this->model->getAllGames();
-        $this->view->response($games);
+        $offset = ($page - 1) * $limit;
+       
+        $games = $this->model->getAllGames($orderBy, $direction, $filterBy, $offset, $limit);
         
+        if (empty($games)) {
+            $this->view->response(["message" => "No hay juegos disponibles en la página solicitada"], 404);
+        } else {
+            // Si hay juegos, responder normalmente
+            $this->view->response($games);
+        }
+        
+        
+    }
+
+    private function isValidCompany($company){
+        $cantCompany = $this->model->getCantCompany($company);
+        return $cantCompany > 0;
+
     }
 
     public function getOne($params = null){
