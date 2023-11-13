@@ -1,4 +1,4 @@
-## Documentación de la API
+# Documentación de la API
 
 **Descripción:**
 
@@ -8,9 +8,9 @@ Esta API proporciona acceso a información sobre juegos. Puedes realizar operaci
 ```plaintext
 http://localhost/entrega3/api/juegos
 ```
-### Endpoints Disponibles
+## Endpoints Disponibles
 
-**Obtener todos los juegos**
+### **Obtener todos los juegos**
 
 *Método*: **GET**
 
@@ -30,7 +30,7 @@ Parámetros de consulta:
 ```plaintext
 http://localhost/entrega3/api/juegos?order=id&dir=asc&filterBy=nombreCompania&page=1&limit=5
 ```
-**Obtener detalles de un juego**
+### **Obtener detalles de un juego**
 
 *Método*: **GET**
 
@@ -46,7 +46,7 @@ Parámetros de ruta:
 ```plaintext
 http://localhost/entrega3/api/juegos/1
 ```
-**Agregar un nuevo juego** 
+### **Agregar un nuevo juego** 
 
 *Método*: **POST**
 
@@ -68,7 +68,7 @@ http://localhost/entrega3/api/juegos/1
 **POST**
 
 ```plaintext
-  http://tu-servidor.com/entrega3/api/juegos
+  http://localhost/entrega3/api/juegos
 ```
 **Respuestas comunes**
 
@@ -93,9 +93,20 @@ http://localhost/entrega3/api/juegos/1
     "message": "El juego con el ID especificado no existe"
   }
 ```
+### **Borrar un juego** 
 
+*Método*: **DELETE**
 
+*Ruta*: **juegos/:ID**
 
+Parámetros de ruta:
+  - **:ID**: Identificador del juego.
 
+**Ejemplo de solicitud:**
 
+**DELETE**
+
+```plaintext
+http://localhost/entrega3/api/juegos/1
+```
 
