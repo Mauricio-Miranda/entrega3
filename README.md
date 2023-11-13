@@ -32,6 +32,9 @@ http://localhost/entrega3/api/juegos?order=id&dir=asc&filterBy=nombreCompania&pa
 ```
 ### **Obtener detalles de un juego**
 
+![Texto alternativo](captures/Traer_Juego.jpg)
+
+
 *Método*: **GET**
 
 *Ruta*: **juegos/:ID**
@@ -47,6 +50,9 @@ Parámetros de ruta:
 http://localhost/entrega3/api/juegos/1
 ```
 ### **Agregar un nuevo juego** 
+
+![Texto alternativo](captures/Agregar_Juego_POST.jpg)
+
 
 *Método*: **POST**
 
@@ -93,6 +99,8 @@ Los campos pueden editarse a gusto, pero para el valor de la clave *desarrollado
 ```
 ### **Borrar un juego** 
 
+![Texto alternativo](captures/Sin%20título.jpg)
+
 *Método*: **DELETE**
 
 *Ruta*: **juegos/:ID**
@@ -118,6 +126,9 @@ http://localhost/entrega3/api/juegos/1
   }
 ```
 - Error 404 - No encontrado:
+
+![Texto alternativo](captures/error_cargar_juego.jpg)
+  
 ```javascript
 {
     "error": "Recurso no encontrado",
