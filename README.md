@@ -52,14 +52,35 @@ http://localhost/entrega3/api/juegos/1
 
 *Ruta*: **juegos**
 
-*Cuerpo de la solicitud (JSON):*
+###### *aclaracion:*
+Los campos pueden editarse a gusto, pero para el valor de la clave *desarrollador* sólo disponemos (por el momento) de **cinco** opciones:
+-  ```plaintext
+      capcom
+   ```
+      
+-  ```plaintext
+      konami
+   ```
+   
+-  ```plaintext
+      bandai
+   ```  
+-  ```plaintext
+      riot
+   ``` 
+  
+-  ```plaintext
+      naughtydog
+   ```    
 
+*Cuerpo de la solicitud (JSON):*
+ 
 ```javascript
     {
       "juego": "Nombre del Juego",
       "texto": "Descripción del Juego",
       "imagen": "URL de la imagen",
-      "desarrollador": "Nombre de la Compañía Desarrolladora"
+      "desarrollador": "Inserta aquí el nombre de la compañía"
     }
 ```
 
@@ -70,6 +91,23 @@ http://localhost/entrega3/api/juegos/1
 ```plaintext
   http://localhost/entrega3/api/juegos
 ```
+### **Borrar un juego** 
+
+*Método*: **DELETE**
+
+*Ruta*: **juegos/:ID**
+
+Parámetros de ruta:
+  - **:ID**: Identificador del juego.
+
+**Ejemplo de solicitud:**
+
+**DELETE**
+
+```plaintext
+http://localhost/entrega3/api/juegos/1
+```
+
 **Respuestas comunes**
 
 - Éxito (200): La solicitud se completó correctamente.
@@ -93,20 +131,3 @@ http://localhost/entrega3/api/juegos/1
     "message": "El juego con el ID especificado no existe"
   }
 ```
-### **Borrar un juego** 
-
-*Método*: **DELETE**
-
-*Ruta*: **juegos/:ID**
-
-Parámetros de ruta:
-  - **:ID**: Identificador del juego.
-
-**Ejemplo de solicitud:**
-
-**DELETE**
-
-```plaintext
-http://localhost/entrega3/api/juegos/1
-```
-
