@@ -12,6 +12,9 @@ http://localhost/entrega3/api/juegos
 
 ### **Obtener todos los juegos**
 
+![Texto alternativo](captures/get.jpg)
+
+
 *Método*: **GET**
 
 *Ruta*: **juegos**
@@ -116,6 +119,28 @@ Parámetros de ruta:
 http://localhost/entrega3/api/juegos/1
 ```
 
+### **Modificar un juego** 
+
+![Texto alternativo](captures/put.jpg)
+
+*Método*: **PUT**
+
+*Ruta*: **juegos/:ID**
+
+Parámetros de ruta:
+  - **:ID**: Identificador del juego.
+
+**Ejemplo de solicitud:**
+
+**PUT**
+
+```plaintext
+http://localhost/entrega3/api/juegos/1
+```
+
+
+
+
 **Respuestas comunes**
 
 - Éxito (200): La solicitud se completó correctamente.
@@ -142,3 +167,6 @@ http://localhost/entrega3/api/juegos/1
     "message": "El juego con el ID especificado no existe"
   }
 ```
+
+
+
