@@ -66,19 +66,17 @@ class GameController {
         } else{        
             $limit = 5;
         }
-
+                
         $offset = ($page - 1) * $limit;
        
         $games = $this->model->getAllGames($orderBy, $direction, $filterBy, $offset, $limit);
         
         if (empty($games)) {
-            $this->view->response(["message" => "No hay juegos disponibles en la página solicitada"], 404);
+            $this->view->response(["message" => "No hay juegos disponibles en la página solicitada"], 200);
         } else {
             // Si hay juegos, responder normalmente
             $this->view->response($games);
-        }
-        
-        
+        }       
     }
 
     private function isValidCompany($company){
@@ -98,21 +96,38 @@ class GameController {
     }
 
     public function addGame(){
-        //$this->data = file_get_contents("php://input");
+       
         $game = $this->getData();
-
+        $numCompany = 0; 
         if($game){
-            $this->model->addGame($game->juego, $game->texto,$game->imagen,$game->desarrollador);
-            $this->view->response("Game successfully added.",200);
-        }
-        else{
-            $this->view->response("Game not added, an error has occurred.",404);
-        }
+            switch ($game->desarrollador){
+                case "capcom": $numCompany = 1;
+                break;
+                case "konami": $numCompany = 2;
+                break;
+                case "bandai": $numCompany = 3;
+                break;
+                case "riot": $numCompany = 4;
+                break;
+                case "naughtydog": $numCompany = 5;
+                break;
+                default: $numCompany = 0;
+                break;
+            }
 
+            if ($numCompany != 0){
+                $this->model->addGame($game->juego, $game->texto,$game->imagen,$numCompany);
+                $this->view->response("Game successfully added.",200);
+            }
+            else{
+                $this->view->response("Game not added. The specified company does not exist.",404);
+            }
+        
+        }
     }
 
     public function updateGame($params = null) {
-        //$this->data = file_get_contents("php://input");
+        
         
         $id = $params[':ID'];
         $data = $this->getData();
@@ -128,5 +143,16 @@ class GameController {
     private function getData(){
         $this->data = file_get_contents("php://input");
         return json_decode($this->data);
+    }
+
+    public function remove($params = null){
+        $id = $params[":ID"];
+        $msg = $this->model->delGame($id);  
+        if($msg == "ok"){
+            $this->view->response("Game deleted successfully",200);
+        }
+        else{
+            $this->view->response("Failed to delete the game",404);
+        }
     }
 }

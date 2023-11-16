@@ -38,7 +38,9 @@ class GamesModel{
     }
 
     function getGame($id){
-        $query = $this->db->prepare('SELECT * FROM juegos WHERE id = ?');
+        $query = $this->db->prepare('SELECT juegos.*, desarrolladores.company AS company FROM juegos
+        INNER JOIN desarrolladores ON juegos.desarrollador = desarrolladores.id_desarrollador
+        WHERE id = ?');
         $query->execute([$id]);
         $game = $query -> fetch(PDO::FETCH_OBJ);
         return $game;
@@ -54,5 +56,20 @@ class GamesModel{
         $query = $this->db -> prepare('UPDATE juegos SET juego =?, texto=?, imagen=?, desarrollador=? WHERE id = ?');
         $query-> execute([$juego, $texto, $imagen, $desarrollador, $id]);
         
+    }
+
+    function delGame($id){
+        try{
+        $query = $this->db -> prepare('DELETE FROM juegos WHERE id = ?');
+        $query-> execute([$id]);
+        return "ok";
+           
+        }
+
+        catch(PDOException $e){
+            $msg = $e->getMessage();
+            return $msg;
+        }
+
     }
 }
